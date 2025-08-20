@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import styles from '../styles/Registration.module.css';
 import { Text } from '../components/Text';
+import { useNavigate } from 'react-router-dom';
 
 export const Registration: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +31,9 @@ export const Registration: React.FC = () => {
       setStatusMessage('Registration successful!');
       setUsername('');
       setPassword('');
+
+      // Redirect to login after 1 second
+      setTimeout(() => navigate('/login'), 1000);
     } catch (error) {
       console.error(error);
       setStatusMessage('Error registering user.');
@@ -60,13 +65,14 @@ export const Registration: React.FC = () => {
           </label>
           <button type="submit" className={styles.button}>Register</button>
         </form>
-        {statusMessage && <Text
-          variant="p"
-          className={`${styles.status} ${statusMessage.includes('successful') ? styles.success : styles.error}`}
+        {statusMessage && (
+          <Text
+            variant="p"
+            className={`${styles.status} ${statusMessage.includes('successful') ? styles.success : styles.error}`}
           >
-          {statusMessage}
-        </Text>
-}
+            {statusMessage}
+          </Text>
+        )}
       </div>
     </div>
   );

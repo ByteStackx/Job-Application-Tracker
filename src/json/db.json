@@ -21,5 +21,22 @@
       "password": "aaaa"
     }
   ],
-  "jobs": []
+  "jobs": [
+    {
+      "id": "0423",
+      "company": "Dell",
+      "role": "Operations Manager",
+      "status": "Applied",
+      "dateApplied": "2025-08-20",
+      "extraDetails": "I'm hoping it really goes well!"
+    },
+    {
+      "id": "6c71",
+      "company": "Asus",
+      "role": "Product Manager",
+      "status": "Applied",
+      "dateApplied": "2025-08-20",
+      "extraDetails": "Fingers crossed!"
+    }
+  ]
 }

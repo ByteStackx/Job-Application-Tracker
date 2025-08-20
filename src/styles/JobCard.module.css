@@ -1,0 +1,52 @@
+.card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+  color: #333;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.role {
+  color: #2575fc;
+}
+
+.company {
+  color: #333;
+}
+
+.status {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.applied {
+  color: #e6b800; /* Yellow */
+}
+
+.interviewed {
+  color: #28a745; /* Green */
+}
+
+.rejected {
+  color: #dc3545; /* Red */
+}
+
+.date {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.additional {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  white-space: pre-wrap; /* preserves line breaks if multi-line text */
+}

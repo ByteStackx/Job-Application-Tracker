@@ -1,0 +1,15 @@
+{
+  "users": [
+    {
+      "id": "13b3",
+      "username": "ash@example.com",
+      "password": "UserPass123"
+    },
+    {
+      "id": "4d6c",
+      "username": "ash@example.com",
+      "password": "uSERpASS123"
+    }
+  ],
+  "jobs": []
+}

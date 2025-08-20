@@ -3,7 +3,8 @@ import React from 'react'
 type Props = {
     variant?: string,
     children: React.ReactNode,
-    style?: React.CSSProperties
+    style?: React.CSSProperties,
+    className?: string
 }
 
 export const Text: React.FC<Props> = ({variant, children, style}) => {

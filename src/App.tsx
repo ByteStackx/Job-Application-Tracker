@@ -1,13 +1,12 @@
-import './App.css'
-import { Navbar } from './components/Navbar'
-import { LandingPage } from './pages/LandingPage'
+import { Routes, Route } from "react-router-dom";
+import { LandingPage } from "./pages/LandingPage";
+import { Registration } from "./pages/Registration";
 
-function App() {
-
+export default function App() {
   return (
-      <LandingPage />
-
-  )
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/registration" element={<Registration />} />
+      </Routes>
+  );
 }
-
-export default App

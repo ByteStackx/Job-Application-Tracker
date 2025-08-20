@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import styles from '../styles/Registration.module.css';
+import styles from '../styles/Login.module.css';
 import { Text } from '../components/Text';
+import { useNavigate } from 'react-router-dom';
 
-export const Registration: React.FC = () => {
+export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,30 +17,29 @@ export const Registration: React.FC = () => {
       return;
     }
 
-    const newUser = { username, password };
-
     try {
-      const response = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newUser),
-      });
+      const response = await fetch(`http://localhost:3000/users?username=${username}&password=${password}`);
+      const data = await response.json();
 
-      if (!response.ok) throw new Error('Failed to save user');
-
-      setStatusMessage('Registration successful!');
-      setUsername('');
-      setPassword('');
+      if (data.length === 0) {
+        setStatusMessage('Invalid username or password.');
+      } else {
+        setStatusMessage('Login successful!');
+        setUsername('');
+        setPassword('');
+        // Navigate to dashboard or home page
+        navigate('/home'); 
+      }
     } catch (error) {
       console.error(error);
-      setStatusMessage('Error registering user.');
+      setStatusMessage('Error logging in.');
     }
   };
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.formContainer}>
-        <Text variant="h1" className={styles.title}>Register</Text>
+        <Text variant="h1" className={styles.title}>Login</Text>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label className={styles.label}>
             Username
@@ -58,15 +59,16 @@ export const Registration: React.FC = () => {
               className={styles.input}
             />
           </label>
-          <button type="submit" className={styles.button}>Register</button>
+          <button type="submit" className={styles.button}>Login</button>
         </form>
-        {statusMessage && <Text
-          variant="p"
-          className={`${styles.status} ${statusMessage.includes('successful') ? styles.success : styles.error}`}
+        {statusMessage && (
+          <Text
+            variant="p"
+            className={`${styles.status} ${statusMessage.includes('successful') ? styles.success : styles.error}`}
           >
-          {statusMessage}
-        </Text>
-}
+            {statusMessage}
+          </Text>
+        )}
       </div>
     </div>
   );

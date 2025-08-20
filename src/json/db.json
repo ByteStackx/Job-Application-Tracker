@@ -9,6 +9,16 @@
       "id": "4d6c",
       "username": "ash@example.com",
       "password": "uSERpASS123"
+    },
+    {
+      "id": "b2d4",
+      "username": "Ash",
+      "password": "123"
+    },
+    {
+      "id": "bf2c",
+      "username": "ash",
+      "password": "aaaa"
     }
   ],
   "jobs": []

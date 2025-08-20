@@ -76,7 +76,7 @@
 .status {
   text-align: center;
   font-size: 0.95rem;
-  color: #333;
+  color: #000000;
 }
 
 .status.error {

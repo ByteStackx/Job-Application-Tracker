@@ -1,55 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { AddJobForm } from '../components/AddJobForm';
-import { JobCard, type JobCardProps } from '../components/JobCard';
-import { SearchBar } from '../components/SearchBar';
-import styles from '../styles/Home.module.css';
-import { Text } from '../components/Text';
-import { useSearchParams } from 'react-router';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { AddJobForm } from "../components/AddJobForm";
+import { JobCard, type JobCardProps } from "../components/JobCard";
+import { SearchBar } from "../components/SearchBar";
+import { FilterBar } from "../components/FilterBar";
+import styles from "../styles/Home.module.css";
+import { Text } from "../components/Text";
 
 export const Home: React.FC = () => {
   const [jobs, setJobs] = useState<JobCardProps[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const searchQuery = searchParams.get('search') || '';
+  const searchTerm = searchParams.get("search") || "";
+  const statusFilter = searchParams.get("status") || "";
 
-  // Fetch jobs from backend
+  // Fetch jobs
   useEffect(() => {
-    fetch('http://localhost:3000/jobs')
-      .then(res => res.json())
-      .then(data => setJobs(data))
-      .catch(err => console.error(err));
+    fetch("http://localhost:3000/jobs")
+      .then((res) => res.json())
+      .then((data) => setJobs(data))
+      .catch((err) => console.error(err));
   }, []);
 
   const handleToggleForm = () => {
-    setShowAddForm(prev => !prev);
+    setShowAddForm((prev) => !prev);
   };
 
-  const handleSearchChange = (value: string) => {
+  const setSearchTerm = (value: string) => {
+    const params = new URLSearchParams(searchParams);
     if (value) {
-      setSearchParams({ search: value });
+      params.set("search", value);
     } else {
-      setSearchParams({});
+      params.delete("search");
     }
+    setSearchParams(params);
   };
 
-  // Filter jobs based on search term
-  const filteredJobs = jobs.filter((job) =>
-    job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    job.status.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const setStatusFilter = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set("status", value);
+    } else {
+      params.delete("status");
+    }
+    setSearchParams(params);
+  };
+
+  // Apply filters
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch =
+      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.status.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus = statusFilter ? job.status === statusFilter : true;
+
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.header}>
         <Text variant="h1">Your Job Applications</Text>
         <button onClick={handleToggleForm} className={styles.addJobBtn}>
-          {showAddForm ? 'Cancel' : 'Add Job'}
+          {showAddForm ? "Cancel" : "Add Job"}
         </button>
       </div>
 
-      <SearchBar searchTerm={searchQuery} setSearchTerm={handleSearchChange} />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <FilterBar statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
 
       {showAddForm && <AddJobForm setJobs={setJobs} />}
 
@@ -57,7 +77,7 @@ export const Home: React.FC = () => {
         {filteredJobs.length === 0 ? (
           <Text variant="p">No jobs found.</Text>
         ) : (
-          filteredJobs.map(job => (
+          filteredJobs.map((job) => (
             <JobCard
               key={job.id}
               id={job.id}

@@ -44,6 +44,14 @@ export const Home: React.FC = () => {
               status={job.status}
               dateApplied={job.dateApplied}
               extraDetails={job.extraDetails}
+              onUpdate={(updatedJob) =>
+                setJobs((prevJobs) =>
+                  prevJobs.map((j) => (j.id === updatedJob.id ? updatedJob : j))
+                )
+              }
+              onDelete={(id) =>
+                setJobs((prevJobs) => prevJobs.filter((j) => j.id !== id))
+              }
             />
           ))
         )}

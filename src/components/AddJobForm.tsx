@@ -91,7 +91,16 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs }) => {
         />
       </label>
       <button type="submit" className={styles.submitBtn}>Add Job</button>
-      {message && <Text variant="p" className={styles.status}>{message}</Text>}
+      {message && (
+        <Text
+          variant="p"
+          className={`${styles.status} ${
+            message.includes('success') ? styles.success : styles.error
+          }`}
+        >
+          {message}
+        </Text>
+      )}
     </form>
   );
 };

@@ -1,52 +1,71 @@
 .card {
-  background-color: #fff;
+  background: white;
   padding: 1.5rem;
+  margin: 1rem 0;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: transform 0.2s;
-  color: #333;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.role {
-  color: #2575fc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .company {
+  font-size: 1.5rem;
+  font-weight: bold;
   color: #333;
 }
 
+.role {
+  font-size: 1.2rem;
+  color: #555;
+}
+
 .status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px; /* pill shape */
+  font-size: 0.9rem;
   font-weight: bold;
-  margin-top: 0.5rem;
+  margin: 0.5rem 0;
+  color: white; /* text color fixed */
 }
 
 .applied {
-  color: #e6b800; /* Yellow */
+  background-color: #f1c40f; /* Yellow */
 }
 
 .interviewed {
-  color: #28a745; /* Green */
+  background-color: #28a745; /* Green */
 }
 
 .rejected {
-  color: #dc3545; /* Red */
+  background-color: #dc3545; /* Red */
 }
 
 .date {
-  color: #777;
   font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
 }
 
-.additional {
-  color: #555;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  white-space: pre-wrap; /* preserves line breaks if multi-line text */
+.details {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.deleteBtn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background-color: #c0392b;
 }

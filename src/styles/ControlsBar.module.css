@@ -1,0 +1,14 @@
+.controlsWrapper {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.controlItem {
+  flex: 1;
+  min-width: 180px;
+}

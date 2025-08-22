@@ -37,6 +37,30 @@
       "status": "Interviewed",
       "dateApplied": "2025-07-27",
       "extraDetails": ""
+    },
+    {
+      "id": "91b6",
+      "company": "Amazon",
+      "role": "Customer Service Rep",
+      "status": "Applied",
+      "dateApplied": "2025-07-29",
+      "extraDetails": ""
+    },
+    {
+      "id": "6f5d",
+      "company": "XXX",
+      "role": "xxx",
+      "status": "Rejected",
+      "dateApplied": "2025-08-12",
+      "extraDetails": ""
+    },
+    {
+      "id": "5263",
+      "company": "yyy",
+      "role": "yyy",
+      "status": "Applied",
+      "dateApplied": "2025-08-19",
+      "extraDetails": ""
     }
   ]
 }

@@ -5,9 +5,10 @@ import { type JobCardProps } from './JobCard';
 
 interface AddJobFormProps {
   setJobs: React.Dispatch<React.SetStateAction<JobCardProps[]>>;
+  onSuccess: () => void; // 👈 new prop to close form
 }
 
-export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs }) => {
+export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs, onSuccess }) => {
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
   const [status, setStatus] = useState<'Applied' | 'Interviewed' | 'Rejected' | ''>('');
@@ -43,11 +44,18 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs }) => {
       setJobs(prev => [...prev, savedJob]);
 
       setMessage('Job added successfully!');
+
       setCompany('');
       setRole('');
       setStatus('');
       setDateApplied('');
       setAdditionalInfo('');
+
+      // close form after short delay so user sees message briefly
+      setTimeout(() => {
+        onSuccess();
+      }, 800);
+
     } catch (error) {
       console.error(error);
       setMessage('Error adding job.');

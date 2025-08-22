@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { AddJobForm } from "../components/AddJobForm";
 import { JobCard, type JobCardProps } from "../components/JobCard";
-import { SearchBar } from "../components/SearchBar";
-import { FilterBar } from "../components/FilterBar";
+import { ControlsBar } from "../components/ControlsBar";
 import styles from "../styles/Home.module.css";
 import { Text } from "../components/Text";
+import { useSearchParams } from "react-router-dom";
 
 export const Home: React.FC = () => {
   const [jobs, setJobs] = useState<JobCardProps[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
+
+  // search params for query, filter and sort
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const searchTerm = searchParams.get("search") || "";
+  const searchTerm = searchParams.get("q") || "";
   const statusFilter = searchParams.get("status") || "";
+  const sortOrder = searchParams.get("sort") || "";
 
-  // Fetch jobs
+  // Fetch jobs from backend
   useEffect(() => {
     fetch("http://localhost:3000/jobs")
       .then((res) => res.json())
@@ -27,37 +29,58 @@ export const Home: React.FC = () => {
     setShowAddForm((prev) => !prev);
   };
 
-  const setSearchTerm = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set("search", value);
-    } else {
-      params.delete("search");
-    }
-    setSearchParams(params);
+  // handlers for ControlsBar
+  const handleSearchChange = (value: string) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (value) {
+        params.set("q", value);
+      } else {
+        params.delete("q");
+      }
+      return params;
+    });
   };
 
-  const setStatusFilter = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set("status", value);
-    } else {
-      params.delete("status");
-    }
-    setSearchParams(params);
+  const handleFilterChange = (value: string) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (value) {
+        params.set("status", value);
+      } else {
+        params.delete("status");
+      }
+      return params;
+    });
   };
 
-  // Apply filters
-  const filteredJobs = jobs.filter((job) => {
-    const matchesSearch =
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.status.toLowerCase().includes(searchTerm.toLowerCase());
+  const handleSortChange = (value: string) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (value) {
+        params.set("sort", value);
+      } else {
+        params.delete("sort");
+      }
+      return params;
+    });
+  };
 
-    const matchesStatus = statusFilter ? job.status === statusFilter : true;
-
-    return matchesSearch && matchesStatus;
-  });
+  // derived filtered + sorted jobs
+  const filteredJobs = jobs
+    .filter((job) =>
+      searchTerm
+        ? job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          job.role.toLowerCase().includes(searchTerm.toLowerCase())
+        : true
+    )
+    .filter((job) => (statusFilter ? job.status === statusFilter : true))
+    .sort((a, b) => {
+      if (!sortOrder) return 0;
+      const dateA = new Date(a.dateApplied).getTime();
+      const dateB = new Date(b.dateApplied).getTime();
+      return sortOrder === "asc" ? dateB - dateA : dateA - dateB;
+    });
 
   return (
     <div className={styles.pageWrapper}>
@@ -68,17 +91,30 @@ export const Home: React.FC = () => {
         </button>
       </div>
 
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <FilterBar statusFilter={statusFilter} setStatusFilter={setStatusFilter} />
+      {showAddForm && (
+        <AddJobForm 
+          setJobs={setJobs} 
+          onSuccess={() => setShowAddForm(false)} // 👈 closes form
+        />
+      )}
 
-      {showAddForm && <AddJobForm setJobs={setJobs} />}
+
+      {/* Controls bar for search, filter, sort */}
+      <ControlsBar
+        searchTerm={searchTerm}
+        setSearchTerm={handleSearchChange}
+        statusFilter={statusFilter}
+        setStatusFilter={handleFilterChange}
+        sortOrder={sortOrder}
+        setSortOrder={handleSortChange}
+      />
 
       <div className={styles.jobList}>
         {filteredJobs.length === 0 ? (
           <Text variant="p">No jobs found.</Text>
         ) : (
           filteredJobs.map((job) => (
-            <JobCard
+	          <JobCard
               key={job.id}
               id={job.id}
               company={job.company}

@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput } from "./TextInput";
 import styles from "../styles/SearchBar.module.css";
 
-interface SearchBarProps {
+type SearchBarProps = {
   searchTerm: string;
   setSearchTerm: (value: string) => void;
 }

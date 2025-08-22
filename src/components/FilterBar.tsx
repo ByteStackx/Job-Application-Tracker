@@ -9,7 +9,7 @@ interface FilterBarProps {
 export const FilterBar: React.FC<FilterBarProps> = ({ statusFilter, setStatusFilter }) => {
   return (
     <div className={styles.filterWrapper}>
-      <label className={styles.label}>Filter by Status:</label>
+      <label className={styles.label}>Filter:</label>
       <select
         value={statusFilter}
         onChange={(e) => setStatusFilter(e.target.value)}

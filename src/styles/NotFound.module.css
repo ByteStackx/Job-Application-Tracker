@@ -1,0 +1,43 @@
+.page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  text-align: center;
+  z-index: 9999;
+}
+
+.title {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.message {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: #cfcfcf;
+}
+
+.link {
+  font-size: 1rem;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #000000;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.link:hover {
+  background: #0077ff;
+  color: white;
+}

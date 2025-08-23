@@ -15,7 +15,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({ statusFilter, setStatusFil
         onChange={(e) => setStatusFilter(e.target.value)}
         className={styles.select}
       >
-        <option value="">All</option>
+        <option value="All">All</option>
         <option value="Applied">Applied</option>
         <option value="Interviewed">Interviewed</option>
         <option value="Rejected">Rejected</option>

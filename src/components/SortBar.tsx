@@ -16,8 +16,8 @@ export const SortBar: React.FC<SortBarProps> = ({ sortOrder, setSortOrder }) => 
         className={styles.select}
       >
         <option value="">None</option>
-        <option value="asc">Most Recent</option>
-        <option value="desc">Oldest</option>
+        <option value="Newest">Most Recent</option>
+        <option value="Oldest">Oldest</option>
       </select>
     </div>
   );

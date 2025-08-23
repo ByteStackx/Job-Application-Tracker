@@ -4,8 +4,13 @@
   margin: 1rem 0;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
 .company {
   font-size: 1.5rem;
   font-weight: bold;
@@ -68,4 +73,21 @@
 
 .deleteBtn:hover {
   background-color: #c0392b;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+.footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viewMore {
+  font-size: 0.9rem;
+  color: #0070f3;
+  cursor: pointer;
 }

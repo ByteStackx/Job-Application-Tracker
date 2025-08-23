@@ -1,85 +1,83 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { AddJobForm } from "../components/AddJobForm";
-import { JobCard, type JobCardProps } from "../components/JobCard";
+import { JobCard, type JobCardProps, type JobData } from "../components/JobCard";
 import { ControlsBar } from "../components/ControlsBar";
 import styles from "../styles/Home.module.css";
 import { Text } from "../components/Text";
-import { useSearchParams } from "react-router-dom";
 
 export const Home: React.FC = () => {
   const [jobs, setJobs] = useState<JobCardProps[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // search params for query, filter and sort
+  // query params hook
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const searchTerm = searchParams.get("q") || "";
-  const statusFilter = searchParams.get("status") || "";
-  const sortOrder = searchParams.get("sort") || "";
+  // initialize from query params
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
+  const [statusFilter, setStatusFilter] = useState(searchParams.get("status") || "All");
+  const [sortOrder, setSortOrder] = useState(searchParams.get("sort") || "Newest");
+
+  // keep URL in sync with state
+  useEffect(() => {
+    const params: Record<string, string> = {};
+
+    if (searchTerm.trim()) params.search = searchTerm; // ✅ only add if not empty
+    if (statusFilter !== "All") params.status = statusFilter; // ✅ don’t save "All"
+    if (sortOrder) params.sort = sortOrder;
+
+    setSearchParams(params, { replace: true });
+  }, [searchTerm, statusFilter, sortOrder, setSearchParams]);
 
   // Fetch jobs from backend
   useEffect(() => {
     fetch("http://localhost:3000/jobs")
       .then((res) => res.json())
-      .then((data) => setJobs(data))
+      .then((data: JobData[]) => {
+        const jobsWithHandlers = data.map((job) => ({
+          ...job,
+          onUpdate: handleUpdate,
+          onDelete: handleDelete,
+        }));
+        setJobs(jobsWithHandlers);
+      })
       .catch((err) => console.error(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleToggleForm = () => {
-    setShowAddForm((prev) => !prev);
+  const handleToggleForm = () => setShowAddForm((prev) => !prev);
+
+  // Update job in state
+  const handleUpdate = (updatedJob: JobData) => {
+    setJobs((prev) =>
+      prev.map((job) =>
+        job.id === updatedJob.id
+          ? { ...updatedJob, onUpdate: handleUpdate, onDelete: handleDelete }
+          : job
+      )
+    );
   };
 
-  // handlers for ControlsBar
-  const handleSearchChange = (value: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      if (value) {
-        params.set("q", value);
-      } else {
-        params.delete("q");
-      }
-      return params;
-    });
+  // Delete job from state
+  const handleDelete = (id: number) => {
+    setJobs((prev) => prev.filter((job) => job.id !== id));
   };
 
-  const handleFilterChange = (value: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      if (value) {
-        params.set("status", value);
-      } else {
-        params.delete("status");
-      }
-      return params;
-    });
-  };
-
-  const handleSortChange = (value: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      if (value) {
-        params.set("sort", value);
-      } else {
-        params.delete("sort");
-      }
-      return params;
-    });
-  };
-
-  // derived filtered + sorted jobs
+  // --- filtering, searching, sorting logic ---
   const filteredJobs = jobs
     .filter((job) =>
-      searchTerm
-        ? job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          job.role.toLowerCase().includes(searchTerm.toLowerCase())
-        : true
+      statusFilter === "All" ? true : job.status === statusFilter
     )
-    .filter((job) => (statusFilter ? job.status === statusFilter : true))
+    .filter((job) =>
+      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.role.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     .sort((a, b) => {
-      if (!sortOrder) return 0;
-      const dateA = new Date(a.dateApplied).getTime();
-      const dateB = new Date(b.dateApplied).getTime();
-      return sortOrder === "asc" ? dateB - dateA : dateA - dateB;
+      if (sortOrder === "Newest") {
+        return new Date(b.dateApplied).getTime() - new Date(a.dateApplied).getTime();
+      } else {
+        return new Date(a.dateApplied).getTime() - new Date(b.dateApplied).getTime();
+      }
     });
 
   return (
@@ -92,46 +90,23 @@ export const Home: React.FC = () => {
       </div>
 
       {showAddForm && (
-        <AddJobForm 
-          setJobs={setJobs} 
-          onSuccess={() => setShowAddForm(false)} // 👈 closes form
-        />
+        <AddJobForm setJobs={setJobs} onClose={() => setShowAddForm(false)} />
       )}
 
-
-      {/* Controls bar for search, filter, sort */}
       <ControlsBar
         searchTerm={searchTerm}
-        setSearchTerm={handleSearchChange}
+        setSearchTerm={setSearchTerm}
         statusFilter={statusFilter}
-        setStatusFilter={handleFilterChange}
+        setStatusFilter={setStatusFilter}
         sortOrder={sortOrder}
-        setSortOrder={handleSortChange}
+        setSortOrder={setSortOrder}
       />
 
       <div className={styles.jobList}>
         {filteredJobs.length === 0 ? (
           <Text variant="p">No jobs found.</Text>
         ) : (
-          filteredJobs.map((job) => (
-	          <JobCard
-              key={job.id}
-              id={job.id}
-              company={job.company}
-              role={job.role}
-              status={job.status}
-              dateApplied={job.dateApplied}
-              extraDetails={job.extraDetails}
-              onUpdate={(updatedJob) =>
-                setJobs((prevJobs) =>
-                  prevJobs.map((j) => (j.id === updatedJob.id ? updatedJob : j))
-                )
-              }
-              onDelete={(id) =>
-                setJobs((prevJobs) => prevJobs.filter((j) => j.id !== id))
-              }
-            />
-          ))
+          filteredJobs.map((job) => <JobCard key={job.id} {...job} />)
         )}
       </div>
     </div>

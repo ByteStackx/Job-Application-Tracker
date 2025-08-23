@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import styles from '../styles/JobCard.module.css';
-import { Text } from './Text';
+import React, { useState } from "react";
+import styles from "../styles/JobCard.module.css";
+import { Text } from "./Text";
+import { useNavigate } from "react-router";
+import { JobEditForm } from "./JobEditForm";
 
-export type JobCardProps = {
+// JobCard.tsx
+export type JobData = {
   id: number;
   company: string;
   role: string;
-  status: 'Applied' | 'Interviewed' | 'Rejected';
+  status: "Applied" | "Interviewed" | "Rejected";
   dateApplied: string;
   extraDetails?: string;
-  onUpdate: (updatedJob: JobCardProps) => void;
-  onDelete: (id: number) => void; // NEW PROP
 };
+
+export type JobCardProps = JobData & {
+  onUpdate: (updatedJob: JobData) => void;
+  onDelete: (id: number) => void;
+};
+
 
 export const JobCard: React.FC<JobCardProps> = ({
   id,
@@ -23,42 +30,24 @@ export const JobCard: React.FC<JobCardProps> = ({
   onUpdate,
   onDelete,
 }) => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedCompany, setEditedCompany] = useState(company);
-  const [editedRole, setEditedRole] = useState(role);
-  const [editedStatus, setEditedStatus] = useState(status);
-  const [editedDate, setEditedDate] = useState(dateApplied);
-  const [editedDetails, setEditedDetails] = useState(extraDetails || '');
 
-  const statusClass =
-    status === 'Rejected'
-      ? styles.rejected
-      : status === 'Interviewed'
-      ? styles.interviewed
-      : styles.applied;
+  const handleNavigate = () => {
+    if (!isEditing) navigate(`/jobs/${id}`);
+  };
 
-  const handleUpdate = async () => {
-    const updatedJob: JobCardProps = {
-      id,
-      company: editedCompany,
-      role: editedRole,
-      status: editedStatus,
-      dateApplied: editedDate,
-      extraDetails: editedDetails,
-      onUpdate,
-      onDelete,
-    };
-
+  const handleUpdate = async (updatedJob: JobData) => {
     try {
       const response = await fetch(`http://localhost:3000/jobs/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedJob),
       });
 
-      if (!response.ok) throw new Error('Failed to update job');
+      if (!response.ok) throw new Error("Failed to update job");
 
-      onUpdate(updatedJob);
+      onUpdate(updatedJob); // only pass JobData
       setIsEditing(false);
     } catch (error) {
       console.error(error);
@@ -69,59 +58,36 @@ export const JobCard: React.FC<JobCardProps> = ({
     const confirmDelete = window.confirm(
       `Are you sure you want to delete the job at ${company} (${role})?`
     );
-
     if (!confirmDelete) return;
 
     try {
       const response = await fetch(`http://localhost:3000/jobs/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
-      if (!response.ok) throw new Error('Failed to delete job');
+      if (!response.ok) throw new Error("Failed to delete job");
 
-      onDelete(id); // update parent state
+      onDelete(id);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const statusClass =
+    status === "Rejected"
+      ? styles.rejected
+      : status === "Interviewed"
+      ? styles.interviewed
+      : styles.applied;
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleNavigate}>
       {isEditing ? (
-        <div className={styles.editForm}>
-          <input
-            value={editedCompany}
-            onChange={(e) => setEditedCompany(e.target.value)}
-          />
-          <input
-            value={editedRole}
-            onChange={(e) => setEditedRole(e.target.value)}
-          />
-          <select
-            value={editedStatus}
-            onChange={(e) =>
-              setEditedStatus(e.target.value as 'Applied' | 'Interviewed' | 'Rejected')
-            }
-          >
-            <option value="Applied">Applied</option>
-            <option value="Interviewed">Interviewed</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <input
-            type="date"
-            value={editedDate}
-            onChange={(e) => setEditedDate(e.target.value)}
-          />
-          <textarea
-            value={editedDetails}
-            onChange={(e) => setEditedDetails(e.target.value)}
-          />
-          <div className={styles.actions}>
-            <button onClick={handleUpdate}>Save</button>
-            <button onClick={() => setIsEditing(false)}>Cancel</button>
-          </div>
-        </div>
+        <JobEditForm
+          job={{ id, company, role, status, dateApplied, extraDetails }}
+          onSave={handleUpdate}
+          onCancel={() => setIsEditing(false)}
+        />
       ) : (
         <>
           <Text variant="h2" className={styles.company}>{company}</Text>
@@ -130,11 +96,16 @@ export const JobCard: React.FC<JobCardProps> = ({
             Status: {status}
           </Text>
           <Text variant="p" className={styles.date}>Applied on: {dateApplied}</Text>
-          {extraDetails && <Text variant="p" className={styles.details}>{extraDetails}</Text>}
+          {/* {extraDetails && <Text variant="p" className={styles.details}>{extraDetails}</Text>} */}
 
-          <div className={styles.actions}>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={handleDelete} className={styles.deleteBtn}>Delete</button>
+          <div className={styles.footer}>
+            <div className={styles.actions}>
+              <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}>Edit</button>
+              <button onClick={(e) => { e.stopPropagation(); handleDelete(); }} className={styles.deleteBtn}>
+                Delete
+              </button>
+            </div>
+            <span className={styles.viewMore}>View details →</span>
           </div>
         </>
       )}

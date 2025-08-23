@@ -28,7 +28,7 @@
       "role": "Hardware Engineer",
       "status": "Applied",
       "dateApplied": "2025-08-21",
-      "extraDetails": ""
+      "extraDetails": ":)"
     },
     {
       "id": "1b82",
@@ -36,7 +36,7 @@
       "role": "Facilitator",
       "status": "Interviewed",
       "dateApplied": "2025-07-27",
-      "extraDetails": ""
+      "extraDetails": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nibh dui, semper suscipit nisi quis, posuere feugiat turpis. Vivamus cursus ligula leo, at tristique est vestibulum ut. Nulla consectetur nec nibh non egestas. Phasellus eleifend et nibh sit amet laoreet. Donec sagittis neque in risus iaculis, in tempus nulla hendrerit. Aliquam ac lectus eu felis fermentum ullamcorper. Integer neque tellus, molestie non lacus venenatis, convallis fringilla mi. Phasellus dapibus dictum condimentum. Praesent sagittis posuere risus quis sollicitudin. Nam in volutpat orci. Praesent tincidunt sagittis tellus."
     },
     {
       "id": "91b6",
@@ -52,15 +52,7 @@
       "role": "xxx",
       "status": "Rejected",
       "dateApplied": "2025-08-12",
-      "extraDetails": ""
-    },
-    {
-      "id": "5263",
-      "company": "yyy",
-      "role": "yyy",
-      "status": "Applied",
-      "dateApplied": "2025-08-19",
-      "extraDetails": ""
+      "extraDetails": "Lorem"
     }
   ]
 }

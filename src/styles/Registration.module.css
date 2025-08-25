@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* full viewport height */
+  min-height: 100vh;
   width: 100vw;
   background: linear-gradient(to right, #6a11cb, #2575fc);
   padding: 1rem;
@@ -86,4 +86,3 @@
 .status.success {
   color: #28a745;
 }
-

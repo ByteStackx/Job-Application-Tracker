@@ -29,7 +29,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs, onClose }) => {
       status,
       dateApplied,
       extraDetails: additionalInfo,
-      id: Date.now(), // temporary unique ID if JSON server doesn't return one
+      id: crypto.randomUUID(), // ✅ string ID instead of number
     };
 
     try {
@@ -56,7 +56,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs, onClose }) => {
       setDateApplied("");
       setAdditionalInfo("");
 
-      if (onClose) onClose(); 
+      if (onClose) onClose();
     } catch (error) {
       console.error(error);
       setMessage("Error adding job.");
@@ -73,7 +73,7 @@ export const AddJobForm: React.FC<AddJobFormProps> = ({ setJobs, onClose }) => {
     );
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => { // ✅ string now
     setJobs((prev) => prev.filter((job) => job.id !== id));
   };
 

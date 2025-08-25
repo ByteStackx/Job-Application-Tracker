@@ -5,6 +5,7 @@ import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { JobPage } from "./pages/JobPage";
 import { NotFound } from "./pages/NotFound";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -12,7 +13,7 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/jobs/:id" element={<JobPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

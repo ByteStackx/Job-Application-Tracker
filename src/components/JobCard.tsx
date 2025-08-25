@@ -4,9 +4,8 @@ import { Text } from "./Text";
 import { useNavigate } from "react-router";
 import { JobEditForm } from "./JobEditForm";
 
-// JobCard.tsx
 export type JobData = {
-  id: number;
+  id: string;
   company: string;
   role: string;
   status: "Applied" | "Interviewed" | "Rejected";
@@ -16,9 +15,8 @@ export type JobData = {
 
 export type JobCardProps = JobData & {
   onUpdate: (updatedJob: JobData) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void; 
 };
-
 
 export const JobCard: React.FC<JobCardProps> = ({
   id,
@@ -47,7 +45,7 @@ export const JobCard: React.FC<JobCardProps> = ({
 
       if (!response.ok) throw new Error("Failed to update job");
 
-      onUpdate(updatedJob); // only pass JobData
+      onUpdate(updatedJob);
       setIsEditing(false);
     } catch (error) {
       console.error(error);
@@ -90,18 +88,36 @@ export const JobCard: React.FC<JobCardProps> = ({
         />
       ) : (
         <>
-          <Text variant="h2" className={styles.company}>{company}</Text>
-          <Text variant="h3" className={styles.role}>{role}</Text>
+          <Text variant="h2" className={styles.company}>
+            {company}
+          </Text>
+          <Text variant="h3" className={styles.role}>
+            {role}
+          </Text>
           <Text variant="p" className={`${styles.status} ${statusClass}`}>
             Status: {status}
           </Text>
-          <Text variant="p" className={styles.date}>Applied on: {dateApplied}</Text>
-          {/* {extraDetails && <Text variant="p" className={styles.details}>{extraDetails}</Text>} */}
+          <Text variant="p" className={styles.date}>
+            Applied on: {dateApplied}
+          </Text>
 
           <div className={styles.footer}>
             <div className={styles.actions}>
-              <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}>Edit</button>
-              <button onClick={(e) => { e.stopPropagation(); handleDelete(); }} className={styles.deleteBtn}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsEditing(true);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete();
+                }}
+                className={styles.deleteBtn}
+              >
                 Delete
               </button>
             </div>

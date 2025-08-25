@@ -19,6 +19,11 @@
       "id": "bf2c",
       "username": "ash",
       "password": "aaaa"
+    },
+    {
+      "id": "4b00",
+      "username": "user",
+      "password": "user"
     }
   ],
   "jobs": [
@@ -53,6 +58,14 @@
       "status": "Rejected",
       "dateApplied": "2025-08-12",
       "extraDetails": "Lorem"
+    },
+    {
+      "id": "042bffcd-a1e9-4825-89c9-0ed22a661a45",
+      "company": "Dell",
+      "role": "Data Engineer",
+      "status": "Interviewed",
+      "dateApplied": "2025-08-15",
+      "extraDetails": ""
     }
   ]
 }

@@ -23,7 +23,6 @@ export const LandingPage = () => {
     return (
         <div className={styles.pageWrapper}>
             <Navbar links={[
-                { label: 'Home', to: '/' },
                 { label: 'Register', to: '/registration' },
                 { label: 'Login', to: '/login' }
             ]} />
@@ -38,8 +37,9 @@ export const LandingPage = () => {
                     <FeaturesContainer features={features} />
                 </div>
             </div>
-
-            <Footer />
+            <div className={styles.footer}>
+                <Footer />
+            </div>
         </div>
     );
 };

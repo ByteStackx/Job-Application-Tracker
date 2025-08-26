@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/JobCard.module.css";
 import { type JobData } from "./JobCard";
+import { Button } from "./Button";
 
 interface JobEditFormProps {
   job: JobData;
@@ -50,8 +51,8 @@ export const JobEditForm: React.FC<JobEditFormProps> = ({ job, onSave, onCancel 
       <input type="date" value={editedDate} onChange={(e) => setEditedDate(e.target.value)} />
       <textarea value={editedDetails} onChange={(e) => setEditedDetails(e.target.value)} />
       <div className={styles.actions}>
-        <button onClick={handleSubmit}>Save</button>
-        <button onClick={onCancel}>Cancel</button>
+        <Button onClick={handleSubmit}>Save</Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </div>
     </div>
   );

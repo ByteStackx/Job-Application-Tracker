@@ -3,6 +3,7 @@ import styles from "../styles/Registration.module.css";
 import { Text } from "../components/Text";
 import { useNavigate } from "react-router-dom";
 import { TextInput } from "../components/TextInput";
+import { Button } from "../components/Button";
 
 export const Registration: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -78,9 +79,9 @@ export const Registration: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={passwordError}
           />
-          <button type="submit" className={styles.button}>
+          <Button type="submit" className={styles.button}>
             Register
-          </button>
+          </Button>
         </form>
 
         {statusMessage && (

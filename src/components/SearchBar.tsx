@@ -1,6 +1,7 @@
 import React from "react";
 import { TextInput } from "./TextInput";
 import styles from "../styles/SearchBar.module.css";
+import { Button } from "./Button";
 
 type SearchBarProps = {
   searchTerm: string;
@@ -18,14 +19,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm 
         className={styles.searchInput}
       />
 
-      <button
+      <Button
         type="button"
         onClick={() => setSearchTerm("")}
         className={styles.clearBtn}
         disabled={!searchTerm}
       >
         ✕
-      </button>
+      </Button>
     </div>
   );
 };

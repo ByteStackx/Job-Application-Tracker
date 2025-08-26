@@ -5,6 +5,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { JobEditForm } from "../components/JobEditForm";
 import type { JobData } from "../components/JobCard";
 import styles from "../styles/JobPage.module.css";
+import { Button } from "../components/Button";
 
 export const JobPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,10 +108,10 @@ export const JobPage: React.FC = () => {
             )}
 
             <div className={styles.actions}>
-              <button onClick={() => setIsEditing(true)}>Edit</button>
-              <button onClick={handleDelete} className={styles.deleteBtn}>
+              <Button onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button onClick={handleDelete} className={styles.deleteBtn}>
                 Delete
-              </button>
+              </Button>
             </div>
           </>
         )}

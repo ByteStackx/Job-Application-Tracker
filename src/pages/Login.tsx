@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/Login.module.css';
 import { Text } from '../components/Text';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/Button';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -65,7 +66,7 @@ export const Login: React.FC = () => {
               className={styles.input}
             />
           </label>
-          <button type="submit" className={styles.button}>Login</button>
+          <Button type="submit" className={styles.button}>Login</Button>
         </form>
         {statusMessage && (
           <Text

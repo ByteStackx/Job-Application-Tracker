@@ -89,9 +89,9 @@ export const Home: React.FC = () => {
       <div className={styles.header}>
         <Text variant="h1">Your Job Applications</Text>
         <div className={styles.headerButtons}>
-          <button onClick={handleToggleForm} className={styles.addJobBtn}>
+          <Button onClick={handleToggleForm} className={styles.addJobBtn}>
             {showAddForm ? "Cancel" : "Add Job"}
-          </button>
+          </Button>
           <Button onClick={handleLogout} className={styles.logoutBtn}>Logout</Button>
         </div>
         
